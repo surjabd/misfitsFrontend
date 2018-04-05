@@ -1,5 +1,4 @@
 let defaultState = {
-    auth:{},
     error:[]
 }
 

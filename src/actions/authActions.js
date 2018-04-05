@@ -10,11 +10,13 @@ export function userLogin(callback) {
             "http://127.0.0.1:8000/login/", callback,
             {}).then(function (response) {
 
-            dispatch({type:'GET_AUTH_TOKEN_SUCCESS', payload: response.data})
+            dispatch({type:'GET_AUTH_TOKEN_SUCCESS', payload: response.data});
+            return true;
 
         }).catch(function (error) {
 
-            dispatch({type:'GET_AUTH_TOKEN_FAIL', payload:error.response})
+            dispatch({type:'GET_AUTH_TOKEN_FAIL', payload:error.response});
+            return false;
         });
     }
 

@@ -2,29 +2,36 @@ import React, { Component } from 'react';
 import '../App.css';
 import {connect} from "react-redux";
 import {userLogin} from "../actions/authActions";
-import {Link,BrowserRouter,Route,Switch} from "react-router-dom";
+import {Link,BrowserRouter,Route,Switch,withRouter} from "react-router-dom";
 import $ from 'jquery';
 
 class DataDashboard extends Component {
     constructor(props) {
         super(props);
 
-
-        this.handleLogin = this.handleLogin.bind(this);
-    }
-
-    handleLogin(event){
-        event.preventDefault();
-
-        var data = new FormData();
-        data.append('username', $('.username').val());
-        data.append('password', $('.password').val());
-        console.log(data);
-
-        this.props.userLogin(data);
+        this.sendSocketData = this.sendSocketData.bind(this);
     }
 
 
+    componentWillMount(){
+        // console.log( this.props.authReducer)
+        console.log(this.props.authReducer)
+        this.props.authReducer.auth? this.sendSocketData():this.props.history.push("/");
+
+
+    }
+
+    sendSocketData(){
+        var socket = new WebSocket("ws://127.0.0.1:8000/ws/chat/test/");
+        socket.onopen = function () {
+            console.log("alerting you");
+            socket.send(JSON.stringify({'message':'Coming from Web'}));
+            // socket.send({'message':'Coming from Web'});
+            setInterval(() => {
+                socket.send(JSON.stringify({'message':'Coming from Web'}));;
+            }, 3000);
+        };
+    }
 
     render() {
         return (
@@ -50,4 +57,4 @@ const mapDispatchToState = (dispatch, ownProps) => {
 
 
 
-export default connect(mapStateToProps,mapDispatchToState)(DataDashboard);
+export default withRouter(connect(mapStateToProps,mapDispatchToState)(DataDashboard));

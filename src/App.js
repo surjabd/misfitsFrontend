@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Login from './components/LoginUser';
 import RegisterUser from "./components/RegisterUser";
+import DataDashboard from './components/DataDashboard';
 import {Link,BrowserRouter,Route,Switch} from "react-router-dom";
 import {connect} from "react-redux";
 import {store} from "redux";
@@ -19,11 +20,10 @@ class App extends Component {
               <Switch>
                   <Route exact path='/' component={()=><Login />}/>
                   <Route path='/register' component={()=><RegisterUser />}/>
-
+                  <Route path='/dashboard' component={()=><DataDashboard />}/>
 
               </Switch>
           </BrowserRouter>
-
       </div>
     );
   }

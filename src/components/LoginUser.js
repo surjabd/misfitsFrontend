@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import {connect} from "react-redux";
 import {userLogin} from "../actions/authActions";
-import {Link,BrowserRouter,Route,Switch} from "react-router-dom";
+import {Link,withRouter} from "react-router-dom";
 import $ from 'jquery';
 
 class LoginUser extends Component {
@@ -19,9 +19,16 @@ class LoginUser extends Component {
         var data = new FormData();
         data.append('username', $('.username').val());
         data.append('password', $('.password').val());
-        console.log(data);
 
-        this.props.userLogin(data);
+
+        this.props.userLogin(data).then(results=>{
+
+                results==true?this.props.history.push("/dashboard"):null;
+
+        }).catch(ex => {
+                console.log("Failed LOGIN")
+        });
+
     }
 
 
@@ -57,4 +64,4 @@ const mapDispatchToState = (dispatch, ownProps) => {
 
 
 
-export default connect(mapStateToProps,mapDispatchToState)(LoginUser);
+export default withRouter(connect(mapStateToProps,mapDispatchToState)(LoginUser));
